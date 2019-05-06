@@ -2,7 +2,7 @@
 
 ## Description
 
-The end goal is to mimic the open source, Windows software OBS Studio which allows users to stream content to websites using a custom made linux, server based solution. This solution will allow for an extremely scalable and automable solution with web-based customization controls.
+The end goal is to remake features of the open source GUI program OBS Studio. OBS allows for users to stream their desktops, video recorders, audio, etc. with huge amounts of customization. A growing feature of OBS is streaming HTML content from other websites (live subscriber count numbers for youtube channel). My goal is to make a linux based, serverside solution where users can achieve the same end-goal through a website based solution and pain-free hosting. Such a solution would be extremely scalable and automable, with good stream stability/reliability. 
 
 My current design is to use Python + Flask to generate a Motion JPEG livestream using image snapshots. Ffmpeg can then be used to redirect that localhost livestream to Youtube or any other platform.
 
@@ -20,7 +20,9 @@ Ffmpeg stream to Youtube kind of works using the command `ffmpeg -re -f mjpeg -f
 
 ### May 6, 2019
 
-* Above command does actually work, I believe stream was going offline because the high amounts of uploading cut off connection for a bit, and ffmpeg doesn't have any recovery method.
-* In the future need a job continously scanning youtube for stream health, if it's offline need to restart ffmpeg.
-* Research most optimized way of retrieving jpg screenshots of a website
-* Still need to research what all the ffmpeg arguments are doing / add a playlist of user defined songs / streaming youtube songs possible??? (youtube-dl package)
+* The above command does actually work. I believe stream was going offline because my personal connection was cutton off for a bit and ffmpeg isn't able to recover.
+* In the future a job needs to continously scan Youtube for stream health and restart ffmpeg if it goes offline.
+* Research the most optimized way of retrieving jpg screenshots of a website
+* Research how to stream audio, possibly from Youtube itself using youtube-dl package
+* Research what all the ffmpeg command arguments are doing actually
+* Research why flask debug/production environment is bad and the purpose of GUnicorn + Gevent 
