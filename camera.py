@@ -42,7 +42,7 @@ class Camera():
 
     def generate_frames(self):
         while True:
-            time.sleep(1/120)
+            time.sleep(1/60)
             self.index += 1
             if self.index == 1317:
                 self.index = 0
@@ -56,6 +56,7 @@ class Camera():
             time.sleep(0)
 
             if time.time() - self.last_access > 3:
+                self.event.clear()
                 frames_iterator.close()
                 break
 
