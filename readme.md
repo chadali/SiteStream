@@ -26,3 +26,12 @@ Ffmpeg stream to Youtube kind of works using the command `ffmpeg -re -f mjpeg -f
 * Research how to stream audio, possibly from Youtube itself using youtube-dl package
 * Research what all the ffmpeg command arguments are doing actually
 * Research why flask debug/production environment is bad and the purpose of GUnicorn + Gevent 
+
+### May 8, 2019
+
+Big thanks to [Miguel](https://blog.miguelgrinberg.com/post/flask-video-streaming-revisited/page/0) for the template
+
+* Learned how Python works with OOP, fixed so that only one background thread runs for multiple clients.
+* Gunicorn is just a better production tool.
+* Gevent allows by defaults thousands of threads. Miguel added time.sleep(0) to allow for it, not sure how it works.
+* Need to fix ffmpeg stream getting stuck at a certain frame. Again, study parameters and maybe add reconnect parameters.

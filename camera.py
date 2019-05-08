@@ -21,43 +21,47 @@ class Camera():
     index = 0
     thread = None
     event = CameraEvent()
+    images = [open('video/' + f + '.jpg', 'rb').read() for f in [str(x) for x in range(1, 1318)]]
 
     def __init__(self):
-        self.images = [open('video/' + f + '.jpg', 'rb').read() for f in [str(x) for x in range(1, 1318)]]
-        if self.thread is None:
-            self.last_access = time.time() 
-            self.thread = threading.Thread(target=self.myThread)
-            self.thread.start()
+        if Camera.thread is None:
+            print("Starting background thread")
+            Camera.last_access = time.time() 
+            Camera.thread = threading.Thread(target=self.myThread)
+            Camera.thread.start()
 
             while self.get_frame() is None:
-                time.sleep(1)
+                time.sleep(0)
 
     def get_frame(self):
-        self.last_access = time.time()
+        Camera.last_access = time.time()
         
-        self.event.wait()
-        self.event.clear()
+        Camera.event.wait()
+        Camera.event.clear()
 
-        return self.frame
+        return Camera.frame
 
-    def generate_frames(self):
+    @staticmethod
+    def generate_frames():
         while True:
             time.sleep(1/60)
-            self.index += 1
-            if self.index == 1317:
-                self.index = 0
-            yield self.images[self.index]
+            Camera.index += 1
+            if Camera.index == 1317:
+                Camera.index = 0
+            yield Camera.images[Camera.index]
 
-    def myThread(self):
-        frames_iterator = self.generate_frames()
+    @classmethod
+    def myThread(cls):
+        frames_iterator = cls.generate_frames()
         for frame in frames_iterator:
-            self.frame = frame
-            self.event.set()
+            Camera.frame = frame
+            Camera.event.set()
             time.sleep(0)
 
-            if time.time() - self.last_access > 3:
-                self.event.clear()
+            if time.time() - Camera.last_access > 5:
+                print("Stop thread due to inactivity")
+                Camera.event.clear()
                 frames_iterator.close()
                 break
 
-        self.thread = None
+        Camera.thread = None
