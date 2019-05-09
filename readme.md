@@ -35,3 +35,4 @@ Big thanks to [Miguel](https://blog.miguelgrinberg.com/post/flask-video-streamin
 * Gunicorn is just a better production tool.
 * Gevent allows by defaults thousands of threads. Miguel added time.sleep(0) to allow for it, not sure how it works.
 * Need to fix ffmpeg stream getting stuck at a certain frame. Again, study parameters and maybe add reconnect parameters.
+* Prototype of webpage to jpg to stream works. What I really need to do is start a headless chrome/firefox browser which generates the frames.

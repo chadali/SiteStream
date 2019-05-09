@@ -1,5 +1,6 @@
 import time
 import threading
+import subprocess
 
 class CameraEvent(object):
     def __init__(self):
@@ -50,9 +51,15 @@ class Camera():
                 Camera.index = 0
             yield Camera.images[Camera.index]
 
+    @staticmethod
+    def generate_web_frames():
+        while True:
+            print("starting to yield image")
+            yield subprocess.check_output(['webkit2png', 'https://imgur.com/gallery/Uwl2eDX', '-x', "1280", "720", "-f", "jpg", "-F", "javascript"]) 
+
     @classmethod
     def myThread(cls):
-        frames_iterator = cls.generate_frames()
+        frames_iterator = cls.generate_web_frames()
         for frame in frames_iterator:
             Camera.frame = frame
             Camera.event.set()
