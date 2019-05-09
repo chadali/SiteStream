@@ -6,6 +6,10 @@ The end goal is to remake features of the open source GUI program OBS Studio. OB
 
 My current design is to use Python + Flask to generate a Motion JPEG livestream using image snapshots. Ffmpeg can then be used to redirect that localhost livestream to Youtube or any other platform.
 
+## Running
+
+`gunicorn --worker-class gevent --workers 1 --bind 0.0.0.0:5000 app:app`
+
 ## Status Reports
 
 ### May 5, 2019
@@ -36,3 +40,10 @@ Big thanks to [Miguel](https://blog.miguelgrinberg.com/post/flask-video-streamin
 * Gevent allows by defaults thousands of threads. Miguel added time.sleep(0) to allow for it, not sure how it works.
 * Need to fix ffmpeg stream getting stuck at a certain frame. Again, study parameters and maybe add reconnect parameters.
 * Prototype of webpage to jpg to stream works. What I really need to do is start a headless chrome/firefox browser which generates the frames.
+
+
+# May 9, 2019
+
+* Launching a headless firefox instance, and spamming screenshots does currently work.
+* It takes a huge amount of CPU usage which NEEDS to be solved. 
+* High fps is only possible with a tiny resolution, which is fine for my intended purposes.

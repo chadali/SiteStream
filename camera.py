@@ -60,7 +60,7 @@ class Camera():
     def generate_web_frames(cls):
         print("start driver")
         options = Options()
-        #options.add_argument('-headless')
+        options.add_argument('-headless')
         options.add_argument('--width=535')
         options.add_argument('--height=330')
         Camera.driver = Firefox(executable_path='geckodriver', options=options)
