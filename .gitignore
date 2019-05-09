@@ -1,3 +1,5 @@
 video/*
 env/*
 __pycache__/*
+*.log
+geckodriver

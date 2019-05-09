@@ -1,6 +1,10 @@
 import time
 import threading
 import subprocess
+from selenium.webdriver import Firefox
+from selenium.webdriver.firefox.options import Options
+from io import BytesIO
+from PIL import Image
 
 class CameraEvent(object):
     def __init__(self):
@@ -17,6 +21,7 @@ class CameraEvent(object):
         self.event.clear()
 
 class Camera():
+    driver = None
     frame = None
     last_access = 0
     index = 0
@@ -51,11 +56,23 @@ class Camera():
                 Camera.index = 0
             yield Camera.images[Camera.index]
 
-    @staticmethod
-    def generate_web_frames():
+    @classmethod
+    def generate_web_frames(cls):
+        print("start driver")
+        options = Options()
+        #options.add_argument('-headless')
+        options.add_argument('--width=535')
+        options.add_argument('--height=330')
+        Camera.driver = Firefox(executable_path='geckodriver', options=options)
+        Camera.driver.get("https://livecounts.net/channel/pewdiepie")
+        start_time = time.time()
+        total_images = 0
         while True:
-            print("starting to yield image")
-            yield subprocess.check_output(['webkit2png', 'https://imgur.com/gallery/Uwl2eDX', '-x', "1280", "720", "-f", "jpg", "-F", "javascript"]) 
+            total_seconds = time.time() - start_time
+            print("getting images at {} fps".format(total_images/total_seconds))
+            x = Camera.driver.get_screenshot_as_png()
+            total_images += 1
+            yield x 
 
     @classmethod
     def myThread(cls):
@@ -72,3 +89,5 @@ class Camera():
                 break
 
         Camera.thread = None
+        Camera.driver.quit()
+        Camera.driver = None
