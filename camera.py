@@ -29,8 +29,8 @@ class Camera():
     event = CameraEvent()
     images = [open('video/' + f + '.jpg', 'rb').read() for f in [str(x) for x in range(1, 1318)]]
 
-    def __init__(self):
-        if Camera.thread is None:
+    def __init__(self, startThread):
+        if Camera.thread is None and startThread:
             print("Starting background thread")
             Camera.last_access = time.time() 
             Camera.thread = threading.Thread(target=self.myThread)
@@ -69,10 +69,21 @@ class Camera():
         total_images = 0
         while True:
             total_seconds = time.time() - start_time
+            time.sleep(1/30)
             print("getting images at {} fps".format(total_images/total_seconds))
             x = Camera.driver.get_screenshot_as_png()
+            img = Image.open(BytesIO(x)).convert('RGB')
+            byte_io = BytesIO()
+            img.save(byte_io, "JPEG")
             total_images += 1
-            yield x 
+            yield byte_io.getvalue()
+
+    @classmethod
+    def adjustSize(cls, width, height):
+        if Camera.driver is not None:
+            Camera.driver.set_window_size(width, height)
+            return 'success'
+        return 'no driver'
 
     @classmethod
     def myThread(cls):

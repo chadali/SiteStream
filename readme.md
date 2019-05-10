@@ -42,8 +42,15 @@ Big thanks to [Miguel](https://blog.miguelgrinberg.com/post/flask-video-streamin
 * Prototype of webpage to jpg to stream works. What I really need to do is start a headless chrome/firefox browser which generates the frames.
 
 
-# May 9, 2019
+### May 9, 2019
 
 * Launching a headless firefox instance, and spamming screenshots does currently work.
 * It takes a huge amount of CPU usage which NEEDS to be solved. 
 * High fps is only possible with a tiny resolution, which is fine for my intended purposes.
+
+### May 10, 2019
+
+* Added new route to test driver window resizing
+* I guess we can continue, CPU is going to be a problem no matter what so I'll have to limit FPS ~15-20
+* Two customizable size drivers both generate frames. PIL library is used to combine frames into a final frame which ffmpeg streams.
+* End result will not be pretty, will not be smooth, will not be practical.
